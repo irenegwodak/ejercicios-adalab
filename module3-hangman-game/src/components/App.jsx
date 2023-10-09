@@ -1,5 +1,5 @@
 // import { useState } from 'react'
-// import '../styles/components/app.scss';
+import '../styles/app.scss';
 
 function App() {
   return (
