@@ -13,7 +13,6 @@ const App = () => {
     },
   ]);
   const [searchValue, setSearchValue] = useState('');
-  const taskCompleted = tasks.filter((task) => task.completed);
 
   const handleSearch = (event) => setSearchValue(event.currentTarget.value);
   const handleTaskFinished = (event) => {
@@ -41,6 +40,17 @@ const App = () => {
       });
   };
 
+  const renderRecount = () => {
+    const taskCompleted = tasks.filter((task) => task.completed);
+    return (
+      <>
+        <p>Tareas totales: {tasks.length}</p>
+        <p>Tareas completadas: {taskCompleted.length}</p>
+        <p>Tareas pendientes: {tasks.length - taskCompleted.length}</p>
+      </>
+    );
+  };
+
   return (
     <>
       <label htmlFor="search">Busca en tu lista</label>
@@ -53,9 +63,7 @@ const App = () => {
       />
       <h1>Mi lista de tareas</h1>
       <ol>{renderList()}</ol>
-      <p>Tareas totales: {tasks.length}</p>
-      <p>Tareas completadas: {taskCompleted.length}</p>
-      <p>Tareas pendientes: {tasks.length - taskCompleted.length}</p>
+      {renderRecount()}
     </>
   );
 };
