@@ -1,9 +1,7 @@
-// import { useState } from 'react'
-// import reactLogo from '../assets/react.svg';
-// import '../styles/App.scss';
 import { useState } from 'react';
 import adalabBanner from '../images/adalab-banner.jpg';
 import adalabLogo from '../images/adalab-logo.png';
+import tweetsData from '../data/tweets.json';
 
 import '../styles/App.scss';
 
@@ -11,11 +9,28 @@ function App() {
   // state
   const [composeIsOpen, setComposeIsOpen] = useState(false);
   const [composeText, setComposeText] = useState('');
+  const [tweets, setTweets] = useState(tweetsData);
 
   //events
   const handleToggleCompose = () => setComposeIsOpen(!composeIsOpen);
   const handleComposeText = (ev) => setComposeText(ev.target.value);
-  const handleSubmit = (ev) => ev.preventDefault();
+  const handleComposeSubmit = (ev) => {
+    ev.preventDefault();
+    tweets.push({
+      id: 'af23weasd',
+      avatar: 'http://localhost:5174/assets/avatars/user-me.jpg',
+      user: 'Irene',
+      username: 'holis',
+      date: '2023',
+      text: composeText,
+      comments: 0,
+      tweets: 0,
+      likes: 0,
+    });
+    setComposeIsOpen(!composeIsOpen);
+    setComposeText('');
+    setTweets([...tweets]);
+  };
 
   //render helpers
   const renderHeader = () => {
@@ -119,13 +134,43 @@ function App() {
       </section>
     );
   };
-
+  const renderTweets = () => {
+    return tweets.map((tweet) => {
+      return (
+        <li key={tweet.id}>
+          <article className="tweet__wrapper">
+            <img
+              className="tweet__avatar"
+              src={tweet.avatar}
+              alt={`Avatar de ${tweet.user}`}
+            />
+            <div className="tweet__content">
+              <p className="tweet__info">
+                <span className="tweet__user">{tweet.user}</span>
+                <span className="tweet__username">@{tweet.username}</span>
+                <span className="tweet__date">{tweet.date}</span>
+              </p>
+              <p className="tweet__text">{tweet.text}</p>
+              <ul className="tweet__actions">
+                <li className="tweet__comments">{tweet.comments}</li>
+                <li className="tweet__retweets">{tweet.retweets}</li>
+                <li className="tweet__likes">{tweet.likes}</li>
+                <li className="tweet__share">
+                  <span className="tweet__share--text">Compartir</span>
+                </li>
+              </ul>
+            </div>
+          </article>
+        </li>
+      );
+    });
+  };
   const renderComposeModal = () => {
     const isTweetEmpty = composeText.length === 0;
     if (composeIsOpen === true) {
       return (
         <div className="compose__modal-overlay">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleComposeSubmit}>
             <div className="compose__modal-wrapper">
               <div className="compose__modal-header">
                 <button
@@ -169,6 +214,7 @@ function App() {
         {renderHeader()}
         <main className="main">
           {renderMainHeader()}
+          {renderTweets()}
           {renderComposeModal()}
         </main>
       </div>

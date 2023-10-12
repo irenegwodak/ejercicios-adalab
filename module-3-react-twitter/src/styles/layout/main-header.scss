@@ -1,4 +1,7 @@
 .main__header {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $border;
+
   .header {
     &__title {
       display: flex;
@@ -121,6 +124,10 @@
     &__followers-info {
       color: #536471;
       font-size: 0.9375rem;
+    }
+
+    &__following {
+      padding-right: 0.5rem;
     }
 
     &__followers-number {
