@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import adalabBanner from '../images/adalab-banner.jpg';
 import adalabLogo from '../images/adalab-logo.png';
-import tweetsData from '../data/tweets.json';
+import getTweets from '../services/api';
 
 import '../styles/App.scss';
 
@@ -9,18 +9,25 @@ function App() {
   // state
   const [composeIsOpen, setComposeIsOpen] = useState(false);
   const [composeText, setComposeText] = useState('');
-  const [tweets, setTweets] = useState(tweetsData);
+  const [tweets, setTweets] = useState([]);
+
+  //effects
+  useEffect(() => {
+    getTweets().then((data) => {
+      setTweets(data);
+    });
+  }, []);
 
   //events
   const handleToggleCompose = () => setComposeIsOpen(!composeIsOpen);
   const handleComposeText = (ev) => setComposeText(ev.target.value);
   const handleComposeSubmit = (ev) => {
     ev.preventDefault();
-    tweets.push({
+    tweets.unshift({
       id: 'af23weasd',
-      avatar: 'http://localhost:5174/assets/avatars/user-me.jpg',
+      avatar: 'http://localhost:5174/assets/user-me.jpg',
       user: 'Irene',
-      username: 'holis',
+      username: 'fu',
       date: '2023',
       text: composeText,
       comments: 0,
