@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import callToApi from '../services/api';
-import '../styles/app.scss';
+import Header from './Header';
+import Dummy from './Dummy';
+import SolutionLetters from './SolutionLetters';
+import ErrorLetters from './ErrorLetters';
+
+import '../styles/App.scss';
 
 function App() {
   //states
-  // const [numberOfErrors, setNumberOfErrors] = useState(0);
-  const [lastLetter, setLastLetter] = useState('');
-  const [userLetters, setUserLetters] = useState([]);
   const [word, setWord] = useState('');
+  const [userLetters, setUserLetters] = useState([]);
+  const [lastLetter, setLastLetter] = useState('');
 
   useEffect(() => {
     callToApi().then((response) => {
@@ -16,40 +20,25 @@ function App() {
   }, []);
 
   //events
+  const handleKeyDown = (ev) => {
+    ev.target.setSelectionRange(0, 1);
+  };
+
   const handleInputLetter = (event) => {
     const regExp = /^[A-Za-zñÑ´Á-Úá-ú¨üÜ\s]*$/;
-    const regExpToNoInclude = /^(|[´¨\s])$/;
+    const regExpToNotInclude = /^(|[´¨\s])$/;
     const inputValue = event.currentTarget.value;
     if (regExp.test(inputValue)) {
       setLastLetter(inputValue);
-      if (!regExpToNoInclude.test(inputValue)) {
+      if (!regExpToNotInclude.test(inputValue) && !userLetters.includes(inputValue)) {
         setUserLetters([...userLetters, inputValue]);
       }
     }
   };
 
   //renders
-  const renderSolutionLetters = () => {
-    const wordLetters = word.split('');
-    return wordLetters.map((letter, i) => {
-      const exists = userLetters.includes(letter);
-      return (
-        <li className="letter" key={i}>
-          {exists ? letter : ''}
-        </li>
-      );
-    });
-  };
-  const renderErrorLetters = () => {
-    const errorLetters = userLetters.filter((letter) => !word.includes(letter));
-    return errorLetters.map((letter, i) => {
-      return (
-        <li className="letter" key={i}>
-          {letter}
-        </li>
-      );
-    });
-  };
+
+  
   const getNumberOfErrors = () => {
     const errorLetters = userLetters.filter((letter) => !word.includes(letter));
     return errorLetters.length;
@@ -58,19 +47,13 @@ function App() {
   return (
     <>
       <div className="page">
-        <header>
-          <h1 className="header__title">Juego del ahorcado</h1>
-        </header>
+        <Header/>
+        
         <main className="main">
           <section>
-            <div className="solution">
-              <h2 className="title">Solución:</h2>
-              <ul className="letters">{renderSolutionLetters()}</ul>
-            </div>
-            <div className="error">
-              <h2 className="title">Letras falladas:</h2>
-              <ul className="letters">{renderErrorLetters()}</ul>
-            </div>
+            <SolutionLetters word={word} userLetters={userLetters}/>
+            <ErrorLetters word={word} userLetters={userLetters}/>
+            
             <form className="form">
               <label className="title" htmlFor="last-letter">
                 Escribe una letra:
@@ -83,25 +66,12 @@ function App() {
                 name="last-letter"
                 id="last-letter"
                 value={lastLetter}
+                onKeyDown={handleKeyDown}
                 onChange={handleInputLetter}
               />
             </form>
           </section>
-          <section className={`dummy error-${getNumberOfErrors()}`}>
-            <span className="error-13 eye"></span>
-            <span className="error-12 eye"></span>
-            <span className="error-11 line"></span>
-            <span className="error-10 line"></span>
-            <span className="error-9 line"></span>
-            <span className="error-8 line"></span>
-            <span className="error-7 line"></span>
-            <span className="error-6 head"></span>
-            <span className="error-5 line"></span>
-            <span className="error-4 line"></span>
-            <span className="error-3 line"></span>
-            <span className="error-2 line"></span>
-            <span className="error-1 line"></span>
-          </section>
+          <Dummy numberOfErrors={getNumberOfErrors()}/>
         </main>
       </div>
     </>
