@@ -6,6 +6,7 @@ import callToApi from '../services/api';
 import '../styles/App.scss';
 
 function App() {
+  
   const objectNewContact = {
     name: '',
     lastname: '',
@@ -26,12 +27,12 @@ function App() {
   }, []);
 
   //events
-  const handleSubmit = (ev) => ev.preventDefault();
+  const handleFormSubmit = (ev) => ev.preventDefault();
   const handleSearch = (ev) => setSearchValue(ev.currentTarget.value);
-  const handleInputNewContactValue = (e) =>
-    setNewContactData({ ...newContactData, [e.target.id]: e.target.value });
+  const handleNewContactForm = (ev) =>
+    setNewContactData({ ...newContactData, [ev.target.id]: ev.target.value });
 
-  const handleAddButton = () => {
+  const handleNewContactAddBtn = () => {
     setContacts([...contacts, newContactData]);
     setNewContactData(objectNewContact);
   };
@@ -41,7 +42,7 @@ function App() {
     return (
       <header className="header">
         <h1 className="header__title">Mi agenda de contactos</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <input
             className="header__search"
             autoComplete="off"
@@ -60,9 +61,9 @@ function App() {
       .filter((contact) => {
         return contact.name.toLowerCase().includes(searchValue.toLowerCase());
       })
-      .map((contact, index) => {
+      .map((contact, i) => {
         return (
-          <li key={index} className="contact__item">
+          <li key={i} className="contact__item">
             <p className="contact__name">
               <label className="contact__label">Nombre:</label>
               {contact.name} {contact.lastname}
@@ -91,7 +92,7 @@ function App() {
   };
   const renderNewContactSection = () => {
     return (
-      <form className="new-contact__form" onSubmit={handleSubmit}>
+      <form className="new-contact__form" onSubmit={handleFormSubmit}>
         <h2 className="new-contact__title">Añade un nuevo contacto</h2>
         <input
           className="new-contact__input"
@@ -99,7 +100,7 @@ function App() {
           name="name"
           id="name"
           placeholder="Nombre"
-          onChange={handleInputNewContactValue}
+          onChange={handleNewContactForm}
           value={newContactData.name}
         />
         <input
@@ -108,7 +109,7 @@ function App() {
           name="lastname"
           id="lastname"
           placeholder="Apellidos"
-          onChange={handleInputNewContactValue}
+          onChange={handleNewContactForm}
           value={newContactData.lastname}
         />
         <input
@@ -117,7 +118,7 @@ function App() {
           name="phone"
           id="phone"
           placeholder="Teléfono"
-          onChange={handleInputNewContactValue}
+          onChange={handleNewContactForm}
           value={newContactData.phone}
         />
         <input
@@ -126,14 +127,14 @@ function App() {
           name="email"
           id="email"
           placeholder="Email"
-          onChange={handleInputNewContactValue}
+          onChange={handleNewContactForm}
           value={newContactData.email}
         />
         <input
           className="new-contact__btn"
           type="submit"
           value="Añadir"
-          onClick={handleAddButton}
+          onClick={handleNewContactAddBtn}
         />
       </form>
     );

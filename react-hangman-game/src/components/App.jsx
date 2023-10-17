@@ -7,7 +7,7 @@ function App() {
 
   const handleClickBtn = () => setNumberOfErrors(numberOfErrors + 1);
   const handleInputLetter = (event) => {
-    const regExp = /^[A-Za-z´ÁÉÍÓÚáéíóú¨üÜ\s]*$/;
+    const regExp = /^[A-Za-zñÑ´Á-Úá-ú¨üÜ\s]*$/;
     const inputValue = event.currentTarget.value;
     if (regExp.test(inputValue)) {
       setLastLetter(inputValue);
