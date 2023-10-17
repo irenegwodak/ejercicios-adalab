@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import '../styles/Letters.scss';
 
 function ErrorLetters({ word, userLetters }) {
@@ -18,4 +19,8 @@ function ErrorLetters({ word, userLetters }) {
     </div>
   );
 }
+ErrorLetters.propTypes = {
+  word: PropTypes.string.isRequired,
+  userLetters: PropTypes.array.isRequired,
+};
 export default ErrorLetters;

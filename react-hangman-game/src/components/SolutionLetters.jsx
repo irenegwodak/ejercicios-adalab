@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import '../styles/Letters.scss';
 
-function SolutionLetters({word, userLetters}) {
+function SolutionLetters({ word, userLetters }) {
   const renderSolutionLetters = () => {
     const wordLetters = word.split('');
     return wordLetters.map((letter, i) => {
@@ -19,4 +20,9 @@ function SolutionLetters({word, userLetters}) {
     </div>
   );
 }
+SolutionLetters.propTypes = {
+  word: PropTypes.string.isRequired,
+  userLetters: PropTypes.array.isRequired,
+};
+
 export default SolutionLetters;
