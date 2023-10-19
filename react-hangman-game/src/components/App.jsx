@@ -17,16 +17,20 @@ import Form from './Form';
 import Footer from './Footer';
 import Instructions from './Instructions';
 import Options from './Options';
+import Loading from './Loading';
 
 function App() {
   //states
   const [word, setWord] = useState('');
   const [userLetters, setUserLetters] = useState([]);
   const [lastLetter, setLastLetter] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     callToApi().then((response) => {
       setWord(response);
+      setIsLoading(false);
     });
   }, []);
 
@@ -59,6 +63,7 @@ function App() {
               path="/"
               element={
                 <section>
+                  <Loading loading={isLoading} />
                   <SolutionLetters word={word} userLetters={userLetters} />
                   <ErrorLetters word={word} userLetters={userLetters} />
                   <Form

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Options = ({handleInputOptions}) => {
   const handleChange = (ev) => {
     const input = ev.currentTarget.value;
@@ -21,5 +23,7 @@ const Options = ({handleInputOptions}) => {
     </form>
   );
 };
-
+Options.propTypes = {
+  handleInputOptions: PropTypes.func.isRequired,
+};
 export default Options;
