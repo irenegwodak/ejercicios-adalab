@@ -1,11 +1,18 @@
+//React
 import { useEffect, useState } from 'react';
+
+//Styles
+import '../styles/App.scss';
+
+//Services
 import callToApi from '../services/api';
+
+//Components
 import Header from './Header';
 import Dummy from './Dummy';
 import SolutionLetters from './SolutionLetters';
 import ErrorLetters from './ErrorLetters';
-
-import '../styles/App.scss';
+import Form from './Form';
 
 function App() {
   //states
@@ -20,25 +27,15 @@ function App() {
   }, []);
 
   //events
-  const handleKeyDown = (ev) => {
-    ev.target.setSelectionRange(0, 1);
-  };
-
-  const handleInputLetter = (event) => {
-    const regExp = /^[A-Za-zñÑ´Á-Úá-ú¨üÜ\s]*$/;
-    const regExpToNotInclude = /^(|[´¨\s])$/;
-    const inputValue = event.currentTarget.value;
-    if (regExp.test(inputValue)) {
-      setLastLetter(inputValue);
-      if (!regExpToNotInclude.test(inputValue) && !userLetters.includes(inputValue)) {
-        setUserLetters([...userLetters, inputValue]);
-      }
+  const handleInputLetter = (value) => {
+    setLastLetter(value);
+    const caracToNotInclude = /^(|[´¨\s])$/;
+    if (!caracToNotInclude.test(value) && !userLetters.includes(value)) {
+      setUserLetters([...userLetters, value]);
     }
   };
 
   //renders
-
-  
   const getNumberOfErrors = () => {
     const errorLetters = userLetters.filter((letter) => !word.includes(letter));
     return errorLetters.length;
@@ -47,31 +44,18 @@ function App() {
   return (
     <>
       <div className="page">
-        <Header/>
-        
+        <Header />
+
         <main className="main">
           <section>
-            <SolutionLetters word={word} userLetters={userLetters}/>
-            <ErrorLetters word={word} userLetters={userLetters}/>
-            
-            <form className="form">
-              <label className="title" htmlFor="last-letter">
-                Escribe una letra:
-              </label>
-              <input
-                autoComplete="off"
-                className="form__input"
-                maxLength="1"
-                type="text"
-                name="last-letter"
-                id="last-letter"
-                value={lastLetter}
-                onKeyDown={handleKeyDown}
-                onChange={handleInputLetter}
-              />
-            </form>
+            <SolutionLetters word={word} userLetters={userLetters} />
+            <ErrorLetters word={word} userLetters={userLetters} />
+            <Form
+              lastLetter={lastLetter}
+              handleInputLetter={handleInputLetter}
+            />
           </section>
-          <Dummy numberOfErrors={getNumberOfErrors()}/>
+          <Dummy numberOfErrors={getNumberOfErrors()} />
         </main>
       </div>
     </>
