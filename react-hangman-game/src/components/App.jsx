@@ -38,7 +38,11 @@ function App() {
       setUserLetters([...userLetters, value]);
     }
   };
-
+  const handleInputOptions = (value) => {
+    setUserLetters([]);
+    setLastLetter('');
+    return setWord(value);
+  };
   //renders
   const getNumberOfErrors = () => {
     const errorLetters = userLetters.filter((letter) => !word.includes(letter));
@@ -65,7 +69,10 @@ function App() {
               }
             />
             <Route path="/instructions" element={<Instructions />} />
-            <Route path="/options" element={<Options />} />
+            <Route
+              path="/options"
+              element={<Options handleInputOptions={handleInputOptions} />}
+            />
           </Routes>
           <Dummy numberOfErrors={getNumberOfErrors()} />
         </main>
