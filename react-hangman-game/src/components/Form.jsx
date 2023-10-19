@@ -1,3 +1,5 @@
+import '../styles/Form.scss';
+
 import PropTypes from 'prop-types';
 
 const Form = ({lastLetter, handleInputLetter}) => {

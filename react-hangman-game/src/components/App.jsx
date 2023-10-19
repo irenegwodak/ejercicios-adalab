@@ -1,5 +1,6 @@
 //React
 import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 //Styles
 import '../styles/App.scss';
@@ -13,6 +14,9 @@ import Dummy from './Dummy';
 import SolutionLetters from './SolutionLetters';
 import ErrorLetters from './ErrorLetters';
 import Form from './Form';
+import Footer from './Footer';
+import Instructions from './Instructions';
+import Options from './Options';
 
 function App() {
   //states
@@ -45,18 +49,28 @@ function App() {
     <>
       <div className="page">
         <Header />
-
         <main className="main">
-          <section>
-            <SolutionLetters word={word} userLetters={userLetters} />
-            <ErrorLetters word={word} userLetters={userLetters} />
-            <Form
-              lastLetter={lastLetter}
-              handleInputLetter={handleInputLetter}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <section>
+                  <SolutionLetters word={word} userLetters={userLetters} />
+                  <ErrorLetters word={word} userLetters={userLetters} />
+                  <Form
+                    lastLetter={lastLetter}
+                    handleInputLetter={handleInputLetter}
+                  />
+                </section>
+              }
             />
-          </section>
+            <Route path="/instructions" element={<Instructions />} />
+            <Route path="/options" element={<Options />} />
+          </Routes>
           <Dummy numberOfErrors={getNumberOfErrors()} />
         </main>
+
+        <Footer />
       </div>
     </>
   );
